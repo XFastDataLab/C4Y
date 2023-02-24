@@ -23,11 +23,16 @@ k=5;                                           % number of clustering categories
 
 [epsilonD,minptsD]=deal( 0.040 , 15 );         
 [epsilonDi,minptsDi]=deal( 0.045 , 14 );       % DBSCAN parameters
+%d=0.1
+%bandwidth1=0.15;                                 
+%bandwidth2=0.178;                             % meanshift parameters, bandwidth1:overall data, bandwidth2: samples
+
 figure(),gscatter(dataall(:,1), dataall(:,2));
 
 % overall data clustering results, cluster_idx：clustering labels
 dione = dataall;
-cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);
+cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);           %DBSCAN
+%[cluster_idx{1, i} ,~]= kmeans(dataall, k);                    %kmeans
 figure(),gscatter(data(:,1), data(:,2), cluster_idx);
 
 
@@ -48,8 +53,8 @@ for i = 1:n
     norm_sample = norm_sample_cell{1, i};                                     %fetch the ith normalized sample
    
    
-    cluster_idx{1,i}=dbscan(ori_sample,epsilonDi,minptsDi);
-    %[cluster_idx{1, i} ,~]= kmeans(ori_sample, k);
+    cluster_idx{1,i}=dbscan(ori_sample,epsilonDi,minptsDi);                  % DBSCAN
+    %[cluster_idx{1, i} ,~]= kmeans(ori_sample, k);                          % kmeans   
     
     %draw clustering result on original sample
     %figure(),gscatter(ori_sample(:,1),ori_sample(:,2),cluster_idx{1,i});
