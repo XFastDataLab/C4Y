@@ -27,6 +27,21 @@ k=5;                                           % number of clustering categories
 %bandwidth1=0.15;                                 
 %bandwidth2=0.178;                             % meanshift parameters, bandwidth1:overall data, bandwidth2: samples
 
+% spectral clustering parameters
+%sigma=3;
+%X = dataall;
+%[row,col] = size(X);
+%计算临接矩阵W,采用高斯核函数RBF
+%W = zeros(row,row);
+%index_all = zeros(row,row);
+%for i = 1:row                   % 全连接构造相似度矩阵W
+%    for j=1:row
+%        if i ~= j
+%            W(i,j) = exp((-sum((X(i,:)-X(j,:)).^2))/(2*sigma.^2));
+%        end
+%    end
+%end                                        
+
 figure(),gscatter(dataall(:,1), dataall(:,2));
 
 % overall data clustering results, cluster_idx：clustering labels
@@ -35,6 +50,7 @@ cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);           %DBSCAN
 %[cluster_idx{1, i} ,~]= kmeans(dataall, k);                    %kmeans
 %[cluster_idx,p,s,K,C,Klist] = Dpeak(dataall, d, k);            %DPeak
 %[clustCent,cluster_idx,clustMembsCell] = MeanShiftCluster(dataall',bandwidth1);   %meanshift
+%cluster_idx = spectral_clustering(W,k);                        %spectral clustering
 figure(),gscatter(data(:,1), data(:,2), cluster_idx);
 
 
@@ -59,6 +75,23 @@ for i = 1:n
     %[cluster_idx{1, i} ,~]= kmeans(ori_sample, k);                          % kmeans  
     %[cluster_idx{1, i},p,s,K,C,Klist] = Dpeak(ori_sample, d, k);            % Dpeak
     %[clustCent,cluster_idx{1,i},clustMembsCell] = MeanShiftCluster(ori_sample',bandwidth2);   %meanshift
+    
+    %X = ori_sample;
+    %[row,col] = size(X);
+    %计算临接矩阵W,采用高斯核函数RBF
+    %W = zeros(row,row);
+    %index_all = zeros(row,row);
+    %for i = 1:row                   % 全连接构造相似度矩阵W
+    %   for j=1:row
+    %        if i ~= j
+    %            W(i,j) = exp((-sum((X(i,:)-X(j,:)).^2))/(2*sigma.^2));
+    %       end
+    %    end
+    %end
+    $cluster_idx{1, i} = spectral_clustering(W,k);
+    %spectral_idx  (original sample)
+    %spectral_idx1 = cluster_idx{1,sample};
+    %[spectral_idx{1, m},~] = spectral_idx1;                           %spectral clustering
     
     %draw clustering result on original sample
     %figure(),gscatter(ori_sample(:,1),ori_sample(:,2),cluster_idx{1,i});
