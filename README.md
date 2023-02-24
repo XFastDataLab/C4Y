@@ -6,4 +6,6 @@ distribution, as well as category distribution, to the entire data set;
 distribution. Thus, the proposed metric works by determining the extent to which the centers of each category in different samples
 conform to Gaussian distribution, and the degree of difference between those categories.
 
+The C4Y program was compiled under Windows using matlab R2016b.
+
 #
