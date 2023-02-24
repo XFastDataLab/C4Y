@@ -52,6 +52,13 @@ dataall = points;
 ```
 
 Step2：
-Choose to use DBSCAN, kmeans, meanshift, DPeak or spectral clustering to perform distributed clustering, and adjust the parameters
+Choose to use DBSCAN, kmeans, meanshift, DPeak or spectral clustering to perform distributed clustering, and adjust the parameters. (the following is an example of DBSCAN.)
 ```matlab
-
+% parameters
+n = 10;                                        % number of samples
+sample = 900;                                  % the number of data points contained in each sample
+k=5;                                           % number of clustering categories
+[epsilonD,minptsD]=deal( 0.040 , 15 );         
+[epsilonDi,minptsDi]=deal( 0.045 , 14 );       % DBSCAN parameters
+dione = dataall;
+cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);           %DBSCAN
