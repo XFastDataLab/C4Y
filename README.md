@@ -140,3 +140,10 @@ fprintf('样本结果\n %d\n',result);
 ```
 Step4: -Press the “Run” button in Matlab and the code will be run.
 
+Output Format
+===================================================================================
+The first 3 columns are randomly selected results from 500 samples; the fourth 
+column represents the distribution of all cluster centers; the last two columns 
+are its corresponding PDF and contour, respectively.As shown below:
+![](https://github.com/XFastDataLab/C4Y/result.png)
+
