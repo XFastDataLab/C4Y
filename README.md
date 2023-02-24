@@ -138,5 +138,5 @@ fprintf('计算\n');
 [sp,product,result] = Sp(meankds,COVS);
 fprintf('样本结果\n %d\n',result);
 ```
-
+Step4: -Press the “Run” button in Matlab and the code will be run.
 
