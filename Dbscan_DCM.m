@@ -23,7 +23,7 @@ k=5;                                           % number of clustering categories
 
 [epsilonD,minptsD]=deal( 0.040 , 15 );         
 [epsilonDi,minptsDi]=deal( 0.045 , 14 );       % DBSCAN parameters
-%d=0.1
+%d=0.1                                         % DPeak parameters
 %bandwidth1=0.15;                                 
 %bandwidth2=0.178;                             % meanshift parameters, bandwidth1:overall data, bandwidth2: samples
 
@@ -33,6 +33,8 @@ figure(),gscatter(dataall(:,1), dataall(:,2));
 dione = dataall;
 cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);           %DBSCAN
 %[cluster_idx{1, i} ,~]= kmeans(dataall, k);                    %kmeans
+%[cluster_idx,p,s,K,C,Klist] = Dpeak(dataall, d, k);            %DPeak
+%[clustCent,cluster_idx,clustMembsCell] = MeanShiftCluster(dataall',bandwidth1);   %meanshift
 figure(),gscatter(data(:,1), data(:,2), cluster_idx);
 
 
@@ -54,7 +56,9 @@ for i = 1:n
    
    
     cluster_idx{1,i}=dbscan(ori_sample,epsilonDi,minptsDi);                  % DBSCAN
-    %[cluster_idx{1, i} ,~]= kmeans(ori_sample, k);                          % kmeans   
+    %[cluster_idx{1, i} ,~]= kmeans(ori_sample, k);                          % kmeans  
+    %[cluster_idx{1, i},p,s,K,C,Klist] = Dpeak(ori_sample, d, k);            % Dpeak
+    %[clustCent,cluster_idx{1,i},clustMembsCell] = MeanShiftCluster(ori_sample',bandwidth2);   %meanshift
     
     %draw clustering result on original sample
     %figure(),gscatter(ori_sample(:,1),ori_sample(:,2),cluster_idx{1,i});
