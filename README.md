@@ -62,3 +62,81 @@ k=5;                                           % number of clustering categories
 [epsilonDi,minptsDi]=deal( 0.045 , 14 );       % DBSCAN parameters
 dione = dataall;
 cluster_idx{1, 1} = dbscan(dione, epsilonD, minptsD);           %DBSCAN
+
+%random sample
+for i = 1:n
+    ori_sample_cell{1, i} = datasample(dataall, sample);           %random sample of data
+    norm_sample_cell{1, i} = mapminmax(ori_sample_cell{1, i}',min_v,max_v)';
+end
+cluster_idx = cell(1, n);                  %clustering labels
+norm_Allcenters = [];                      %stors all clustering centroids
+ori_Allcenters = [];                       %all centeroids in [0,10]
+
+%clustering of samples
+for i = 1:n
+    ori_sample = ori_sample_cell{1, i};                                       %fetch the ith original sample  
+    norm_sample = norm_sample_cell{1, i};                                     %fetch the ith normalized sample
+    cluster_idx{1,i}=dbscan(ori_sample,epsilonDi,minptsDi);                  % DBSCAN
+    figure(),gscatter(ori_sample(:,1),ori_sample(:,2),cluster_idx{1,i});
+   
+    label = unique(cluster_idx{1, i});                                    %number of categories
+    length(label);
+    norm_dikind = [];                                                     %points in each category
+    ori_dikind = [];
+
+    for j = 1:length(label)
+        labelname = label(j);
+        if labelname == -1
+            continue                                 %Denoising
+        else
+            norm_dikind = [norm_sample(find(cluster_idx{1, i} == labelname),:)];
+            ori_dikind =  [ori_sample(find(cluster_idx{1, i} == labelname),:)];
+            C = mean(norm_dikind, 1);               %calculation center point
+            C1 = mean(ori_dikind, 1);               %calculation center point in [0,10]
+            %plot(C(:,1),C(:,2),'kx','MarkerSize',15,'LineWidth',3)
+            norm_Allcenters = [norm_Allcenters; C];
+            ori_Allcenters = [ori_Allcenters; C1];
+        end
+    end
+end
+```
+
+Step2：
+Use kmeans clustering for all clustering centroids and call `SP.m` to calculate the value of C4Y and draw its corresponding probability density function plot and contour plot.
+```matlab
+%clustering of centroids
+[norm_Allcenters_idx,~] =  kmeans(norm_Allcenters,k);
+[ori_Allcenters_idx,~] = kmeans (ori_Allcenters,k);
+%polt centroid clustering results
+figure(),gscatter(norm_Allcenters(:,1),norm_Allcenters(:,2), norm_Allcenters_idx);
+figure(),gscatter(ori_Allcenters(:,1),ori_Allcenters(:,2), ori_Allcenters_idx);
+%hold off
+
+label = unique(norm_Allcenters_idx);
+meankds = [];
+COVS = [];
+for i = 1:length(unique(label))
+    labelname = label(i);
+    if labelname == -1
+        continue
+    end
+    
+    kd = norm_Allcenters(find(norm_Allcenters_idx == labelname),:);
+    check = size(kd);  
+    %meankd = mean(kd);    
+    
+    if check ~= 1
+        meankd = mean(kd);    %mean value
+    else
+        continue
+    end
+    meankds = [meankds;meankd];
+    covkd = cov(kd(:,1), kd(:,2));
+    COVS = [COVS;covkd];
+end
+fprintf('计算\n');
+[sp,product,result] = Sp(meankds,COVS);
+fprintf('样本结果\n %d\n',result);
+```
+
+
