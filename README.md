@@ -145,5 +145,6 @@ Output Format
 The first 3 columns are randomly selected results from 500 samples; the fourth 
 column represents the distribution of all cluster centers; the last two columns 
 are its corresponding PDF and contour, respectively.As shown below:
-![](https://github.com/XFastDataLab/C4Y/result.png)
+![](https://github.com/XFastDataLab/C4Y/blob/main/result.png)
 
+DBSCAN with ε = 30, MinPts = 7, which has C4Y = 5.74.
